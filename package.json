@@ -1,7 +1,7 @@
 {
   "name": "bulksmsnigeria-js-sdk",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple web client for Bulk SMS Nigeria",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/iamprincesly/bulksmsnigeria-js-sdk/issues"
   },
-  "homepage": "https://github.com/iamprincesly/bulksmsnigeria-js-sdk#readme"
+  "homepage": "https://github.com/iamprincesly/bulksmsnigeria-js-sdk#readme",
+  "dependencies": {
+    "axios": "^0.24.0"
+  }
 }
