@@ -17,8 +17,8 @@
  */
 class BulkSMSNigeriaAPIError extends Error {
     constructor(message, error) {
-        super(message, error);
-        // this.error = error;
+        super(message);
+        this.error = error;
 
         this.name = this.constructor.name;
 
