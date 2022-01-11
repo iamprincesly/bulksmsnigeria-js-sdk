@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  * ----------------------------------------------------------------
  */
-const axios = require('axios');
-const BulkSMSNigeriaInvalidPhone = require('./Exceptions/BulkSMSNigeriaInvalidPhone');
-const BulkSMSNigeriaAPIError = require('./Exceptions/BulkSMSNigeriaAPIError');
+var axios = require('axios');
+var BulkSMSNigeriaInvalidPhone = require('./Exceptions/BulkSMSNigeriaInvalidPhone');
+var BulkSMSNigeriaAPIError = require('./Exceptions/BulkSMSNigeriaAPIError');
 
-const BASE_URL = 'https://www.bulksmsnigeria.com/api/v1/sms/create';
+var BASE_URL = 'https://www.bulksmsnigeria.com/api/v1/sms/create';
 
 module.exports = class BulkSMSNigeria {
     constructor(apiKey, from, to, body, dnd = 2) {
@@ -24,27 +24,24 @@ module.exports = class BulkSMSNigeria {
     }
 
     validatePhone(phone) {
-        let numbers;
-        // if (typeof phone === 'object') {
-        //     numbers = phone.toString();
-        // } else if (
-        //     typeof phone === 'number' &&
-        //     !phone.length > 13 &&
-        //     !phone.length < 10
-        // ) {
-        //     numbers = phone;
-        // } else {
-        //     throw new BulkSMSNigeriaInvalidPhone('Invalid phone number(s)');
-        // }
+        var numbers;
+        if (typeof phone === 'object') numbers = phone.toString();
 
-        return phone;
+        if (typeof phone === 'number') {
+            if (phone.length > 13 || phone.length < 10)
+                throw new BulkSMSNigeriaInvalidPhone('Invalid phone number(s)');
+
+            numbers = phone;
+        }
+
+        return numbers;
     }
 
     sendSMS() {
         // Make a request
 
-        let response;
-        const link =
+        var response;
+        var link =
             BASE_URL +
             '?api_token=' +
             this.apiKey +
@@ -59,13 +56,13 @@ module.exports = class BulkSMSNigeria {
 
         return new Promise(async function (resolve, reject) {
             try {
-                const response = await axios.get(link);
+                var response = await axios.get(link);
 
                 if (!response) {
                     reject('Something went wrong, message not send!');
                 }
-                
-                const successObject = {
+
+                var successObject = {
                     msg: 'Success',
                     data: response,
                 };
