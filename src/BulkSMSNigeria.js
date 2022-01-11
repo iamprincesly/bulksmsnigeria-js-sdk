@@ -25,13 +25,16 @@ module.exports = class BulkSMSNigeria {
 
     validatePhone(phone) {
         var numbers;
-        if (typeof phone === 'object') numbers = phone.toString();
 
-        if (typeof phone === 'number') {
+        if (typeof phone === 'object') {
+            numbers = phone.toString();
+        } else if (typeof phone === 'number') {
             if (phone.length > 13 || phone.length < 10)
                 throw new BulkSMSNigeriaInvalidPhone('Invalid phone number(s)');
 
             numbers = phone;
+        } else {
+            throw new BulkSMSNigeriaInvalidPhone('Invalid phone number(s)');
         }
 
         return numbers;
