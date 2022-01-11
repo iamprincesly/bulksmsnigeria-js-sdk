@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/iamprincesly/bulksmsnigeria-js-sdk#readme",
   "dependencies": {
-    "axios": "^0.24.0"
+    "axios": "^0.24.0",
+    "erroran": "^1.0.4",
+    "jest": "^27.4.7"
   }
 }
