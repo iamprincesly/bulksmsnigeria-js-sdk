@@ -9,13 +9,15 @@
  * ----------------------------------------------------------------
  */
 
+ const { Erroran } = require('erroran');
+
 /**
  *Throw error when invalid phone is use
  *
  * @class BulkSMSNigeriaAPIError
  * @extends {Error}
  */
-class BulkSMSNigeriaAPIError extends Error {
+class BulkSMSNigeriaAPIError extends Erroran {
     constructor(message, error) {
         super(message);
         this.error = error;
