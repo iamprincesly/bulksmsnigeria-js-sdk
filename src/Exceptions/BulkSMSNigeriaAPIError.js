@@ -9,7 +9,7 @@
  * ----------------------------------------------------------------
  */
 
- const { Erroran } = require('erroran');
+const { Erroran } = require('erroran');
 
 /**
  *Throw error when invalid phone is use
@@ -20,7 +20,9 @@
 class BulkSMSNigeriaAPIError extends Erroran {
     constructor(message, error) {
         super(message);
-        this.error = error;
+        if (error) {
+            this.error = error;
+        }
 
         this.name = this.constructor.name;
 

@@ -59,9 +59,6 @@ module.exports = class BulkSMSNigeria {
     }
 
     sendSMS() {
-        // Make a request
-
-        var response;
         var link =
             BASE_URL +
             '?api_token=' +
@@ -90,12 +87,17 @@ module.exports = class BulkSMSNigeria {
 
                 resolve(successObject);
             } catch (err) {
-                reject(
-                    new BulkSMSNigeriaAPIError(
-                        err.response.data.error.message,
-                        err.response.data.error
-                    )
-                );
+                if (err.code === 'ENOTFOUND') {
+                    reject(
+                        new BulkSMSNigeriaAPIError(
+                            'Something went wrong please check your internet connection'
+                        )
+                    );
+                } else {
+                    reject(
+                        new BulkSMSNigeriaAPIError('Error making API call', err)
+                    );
+                }
             }
         });
     }
