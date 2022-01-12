@@ -16,7 +16,7 @@ var BASE_URL = 'https://www.bulksmsnigeria.com/api/v1/sms/create';
 
 module.exports = class BulkSMSNigeria {
     constructor(apiKey, from, to, body, dnd = 2) {
-        this.apiKey = apiKey;
+        this.apiKey = apiKey || process.env.BULK_SMS_NIGERIA_API_KEY;
         this.from = from;
         this.to = to;
         this.body = body;
@@ -24,20 +24,38 @@ module.exports = class BulkSMSNigeria {
     }
 
     validatePhone(phone) {
-        var numbers;
+        if (typeof phone === 'string') {
+            var numbers = phone.replace(/\s+/g, '').split(',');
 
-        if (typeof phone === 'object') {
-            numbers = phone.toString();
-        } else if (typeof phone === 'number') {
-            if (phone.length > 13 || phone.length < 10)
-                throw new BulkSMSNigeriaInvalidPhone('Invalid phone number(s)');
+            var validNumber = [];
 
-            numbers = phone;
+            numbers.forEach((number) => {
+                if (
+                    number.length === 10 ||
+                    number.length === 11 ||
+                    number.length === 13
+                ) {
+                    number.split('').forEach((num) => {
+                        if (isNaN(num))
+                            throw new BulkSMSNigeriaInvalidPhone(
+                                'Phone number should not contain letter or any special characters'
+                            );
+                    });
+
+                    validNumber.push(number);
+                } else {
+                    throw new BulkSMSNigeriaInvalidPhone(
+                        'Invalid phone number(s)'
+                    );
+                }
+            });
         } else {
-            throw new BulkSMSNigeriaInvalidPhone('Invalid phone number(s)');
+            throw new BulkSMSNigeriaInvalidPhone(
+                'Pass phone number(s) as a string and seperate each with a comma'
+            );
         }
 
-        return numbers;
+        return validNumber.toString();
     }
 
     sendSMS() {
