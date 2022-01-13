@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  * ----------------------------------------------------------------
  */
-const BulkSMSNigeria = require('../src/BulkSMSNigeria');
+var BulkSMSNigeria = require('../src/BulkSMSNigeria');
 
-const SMS = new BulkSMSNigeria(
+var SMS = new BulkSMSNigeria(
     'LW1S0Vty61rBnd14Hc9Qa6Qo25OFDIL06td3cNhl98XtCyALYJTu7hb1nP4L',
     'BulkSMSNG',
     '07065526016',
@@ -42,7 +42,7 @@ describe('Validat Phone', () => {
     });
 
     it('Should return valid phone numbers seperated with a comma', () => {
-        const result = SMS.validatePhone('7012345678,07012345678,2347012345678');
+        var result = SMS.validatePhone('7012345678,07012345678,2347012345678');
         expect(result).toBe('7012345678,07012345678,2347012345678');
     });
 });

@@ -9,7 +9,7 @@
  * ----------------------------------------------------------------
  */
 
-const { Erroran } = require('erroran');
+var { Erroran } = require('erroran');
 
 /**
  *Throw error when invalid phone is use
