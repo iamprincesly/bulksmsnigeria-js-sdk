@@ -59,7 +59,7 @@ module.exports = class BulkSMSNigeria {
     }
 
     sendSMS() {
-        var link =
+        var url =
             BASE_URL +
             '?api_token=' +
             this.apiKey +
@@ -72,17 +72,19 @@ module.exports = class BulkSMSNigeria {
             '&dnd=' +
             this.dnd;
 
+        const options = { url: url, method: 'GET' };
+
         return new Promise(async function (resolve, reject) {
             try {
-                var response = await axios.get(link);
+                var response = await axios.request(options);
 
-                if (!response) {
+                if (!response.data) {
                     reject('Something went wrong, message not send!');
                 }
 
                 var successObject = {
-                    msg: 'Success',
-                    data: response,
+                    msg: 'Message sent successfully',
+                    data: response.data,
                 };
 
                 resolve(successObject);
@@ -95,7 +97,10 @@ module.exports = class BulkSMSNigeria {
                     );
                 } else {
                     reject(
-                        new BulkSMSNigeriaAPIError('Error making API call', err)
+                        new BulkSMSNigeriaAPIError(
+                            'Error making API call',
+                            err.errors
+                        )
                     );
                 }
             }
