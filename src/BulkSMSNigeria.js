@@ -11,6 +11,7 @@
 var axios = require('axios');
 var BulkSMSNigeriaInvalidPhone = require('./Exceptions/BulkSMSNigeriaInvalidPhone');
 var BulkSMSNigeriaAPIError = require('./Exceptions/BulkSMSNigeriaAPIError');
+var helpers = require('./helpers');
 
 var BASE_URL = 'https://www.bulksmsnigeria.com/api/v1/sms/create';
 
@@ -23,39 +24,22 @@ module.exports = class BulkSMSNigeria {
         this.dnd = dnd;
     }
 
-    validatePhone(phone) {
-        if (typeof phone === 'string') {
-            var numbers = phone.replace(/\s+/g, '').split(',');
+    checkNumbers(numbers) {
+        let validNumbers;
 
-            var validNumber = [];
+        if (typeof numbers === 'string') {
+            var numbersArr = numbers.replace(/\s+/g, '').split(',');
 
-            numbers.forEach((number) => {
-                if (
-                    number.length === 10 ||
-                    number.length === 11 ||
-                    number.length === 13
-                ) {
-                    number.split('').forEach((num) => {
-                        if (isNaN(num))
-                            throw new BulkSMSNigeriaInvalidPhone(
-                                'Phone number should not contain letter or any special characters'
-                            );
-                    });
-
-                    validNumber.push(number);
-                } else {
-                    throw new BulkSMSNigeriaInvalidPhone(
-                        'Invalid phone number(s)'
-                    );
-                }
-            });
+            validNumbers = helpers.validatePhoneNumber(numbersArr);
+        } else if (numbers instanceof Array) {
+            validNumbers = helpers.validatePhoneNumber(numbers);
         } else {
             throw new BulkSMSNigeriaInvalidPhone(
                 'Pass phone number(s) as a string and seperate each with a comma'
             );
         }
 
-        return validNumber.toString();
+        return validNumbers;
     }
 
     sendSMS() {
@@ -66,13 +50,13 @@ module.exports = class BulkSMSNigeria {
             '&from=' +
             this.from +
             '&to=' +
-            this.validatePhone(this.to) +
+            this.checkNumbers(this.to) +
             '&body=' +
             this.body +
             '&dnd=' +
             this.dnd;
 
-        const options = { url: url, method: 'GET' };
+        var options = { url: url, method: 'GET' };
 
         return new Promise(async function (resolve, reject) {
             try {
