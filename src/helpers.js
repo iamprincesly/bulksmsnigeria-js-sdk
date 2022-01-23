@@ -12,15 +12,19 @@ var BulkSMSNigeriaInvalidPhone = require('./Exceptions/BulkSMSNigeriaInvalidPhon
 
 module.exports = { validatePhoneNumber };
 
+/**
+ * Validate Phone numbers
+ *
+ * @param {Number} numbers
+ * @return {Number} validNumbers
+ */
 function validatePhoneNumber(numbers) {
     var validNumbers = [];
 
     numbers.forEach((number) => {
-        if (
-            number.length === 10 ||
-            number.length === 11 ||
-            number.length === 13
-        ) {
+        var length = number.length;
+
+        if (length === 10 || length === 11 || length === 13) {
             number.split('').forEach((num) => {
                 if (isNaN(num))
                     throw new BulkSMSNigeriaInvalidPhone(
