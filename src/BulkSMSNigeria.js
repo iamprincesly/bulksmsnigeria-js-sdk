@@ -32,10 +32,18 @@ module.exports = class BulkSMSNigeria {
 
             validNumbers = helpers.validatePhoneNumber(numbersArr);
         } else if (numbers instanceof Array) {
-            validNumbers = helpers.validatePhoneNumber(numbers);
+            numbers.forEach((num) => {
+                if (typeof num === 'number') {
+                    validNumbers = helpers.validatePhoneNumber(numbers);
+                } else {
+                    throw new BulkSMSNigeriaInvalidPhone(
+                        'Number(s) should not contain a space or special characters'
+                    );
+                }
+            });
         } else {
             throw new BulkSMSNigeriaInvalidPhone(
-                'Pass phone number(s) as a string and seperate each with a comma'
+                'Pass phone number(s) as a string and seperate each with a comma or pass it as array of strings'
             );
         }
 
@@ -73,20 +81,12 @@ module.exports = class BulkSMSNigeria {
 
                 resolve(successObject);
             } catch (err) {
-                if (err.code === 'ENOTFOUND') {
-                    reject(
-                        new BulkSMSNigeriaAPIError(
-                            'Something went wrong please check your internet connection'
-                        )
-                    );
-                } else {
-                    reject(
-                        new BulkSMSNigeriaAPIError(
-                            'Error making API call',
-                            err.errors
-                        )
-                    );
-                }
+                reject(
+                    new BulkSMSNigeriaAPIError(
+                        'Error sending message',
+                        err.errors
+                    )
+                );
             }
         });
     }
